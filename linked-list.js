@@ -1,13 +1,17 @@
 /** Node is managed by a factory that helps to insert data from a collection of data items */
 
-export default class Node {
-    constructor(data){
+class Node {
+    constructor(key, data){
         this.data = data;
-        this.nextNode = null;
+        this.next = null;
+        this.key = key;
     }
 }
 
-export default class LinkedList {
+let head = null;
+let current = null;
+
+class LinkedList {
     constructor(array){
         this.head = null;
         this.initializeLinkedList(array)
@@ -18,54 +22,194 @@ export default class LinkedList {
      */
     initializeLinkedList(array){
         // make sure head does not have data
-        this.head = new Node(array[0])
+        let prev, current, next;
+        prev = new Node(array[i]);
+        
         for(
-            let i = 1; 
+            let i = 2; 
             i<=array.length; 
             i++){
-                head.nextNode= new Node(array[i]);
+                current = new Node(array[i])
+                prev.next = current;
         }
+    }
+    /**
+     * prints linked list
+     */
+    printList(){
+        let ptr = head;
+
+        while(ptr != null){
+            console.log(`${ptr.key}, ${ptr.data}`)
+            ptr = ptr.next;
+        }
+    }
+    /**
+     * removes first link in linked list and returns it
+     */
+    deleteFirst(){
+        let tempLink = head;
+        head = head.next;
+        return tempLink;
+    }
+
+    isEmpty(){
+        return head == null;
+    }
+    /**
+     * returns the total length of the linked list
+     */
+    length(){
+        let length = 0;
+        let current;
+
+        for(
+            current = head;
+            current !=null;
+            current = current.next
+            ){
+                length++
+            }
+            return length;
     }
 
     /**
-     * insertNode
+     * insertNode first
+     * @param {Node} key - index in original array
      * @param {*} data - data to be encapsulated
-     * @param {Node} insertAfter - node to be appended by data as new node
      */
-    insertNode(data, insertAfter){
-        let node = new Node(data);
-        node.nextNode = insertAfter.nextNode;
-        insertAfter.nextNode = node;
+    insertFirst(key, data){
+        let link = new Node(key, data);
+        link.next = head;
+        head = link;
     }
+
     /**
      * search for a node in linked list given identifier
      * @param {*} key - key to find node based on identifier 
      */
-    search(key){
-        // todo: search recursively rather than iteratively
-        let prevNode = this.head.next;
-        while(key !== data){
-            prevNode = node.next;
-            node = node.next.next;
+    find(key){
+        let current = head;
+
+        if(head == null){
+            return null;
         }
-        return {prevNode, node};
+
+        return this.traverse(key);
+    }
+    /**
+     * 
+     * @param {*} _key traverse until node matches key and return current and previous node
+     */
+    traverse(_key){
+        let current, previous;
+        while(_key !=key){
+
+            if(current.next == null){
+                return null;
+            } else {
+                previous = current;
+                current = current.next
+            }
+        }
+
+        return {previous, current};
+    }
+
+    /**
+     * traverse linked list until index i equals link no and return it.
+     * @param {*} i index of link to return 
+     */
+    traverseIndex(i){
+        let current;
+        let index = 0;
+        while(index === i || current === null){
+
+            if(current.next == null){
+                return null;
+            } else {
+                current = current.next
+                index++;
+            }
+        }
+        return current
     }
     /** 
      * deletes a node in the linked list
      * @param {Node} node - node to be deleted after
      */
-    deleteNode(node, key){
-        let { prevNode, node} = this.search(key);
-        prevNode.nextNode = nextNode;
-        targetNode.next = null;
+    deleteNode(key){
+        let current = head;
+        let previous = null;
 
+        if(head == null){
+            return null;
+        }
+
+        const {previous, current} = this.traverse(key);
+
+        if(current == head){
+            head = head.next;
+
+        } else {
+            previous.next = current.next;
+        }
+
+    }
+    /**
+     * reverse operation traversed to end of list and links head to last element
+     */
+    reverse(){
+        let prev = null;
+        let current = this.head;
+        let next;
+
+        while(current != null){
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+            this.head = prev;
+        }
     }
     /**
      * removes first element
      */
-    pop(){}
-    /**
-     * displays all elements in LL
-     */
-    display(){}
+    pop(){
+        let temp = this.head.next;
+        this.head = this.head.next;
+        return temp;
+    }
+    //  tbd all sorting algos
+    // todo: learn how to merge sort a singly linked list
+    mergeSort(){
+        if(this.length() > 1){
+            let mid = traverseIndex(this.length()/2);
+            let L = arr.slice(0,mid-1);
+            let R = arr.slice(mid);
+
+            this.mergeSort(L);
+            this.mergeSort(R);
+
+            i = j = k = 0;
+
+            while( i < ){
+
+            }
+        }
+    }
+    insertionSort(){}
+    quickSort()
 }
+
+
+const arr = [1,2,3,4,5,6,7,8,9,10];
+
+const linkedList = new LinkedList(arr);
+
+console.log(linkedList);
+
+
+
+
+
